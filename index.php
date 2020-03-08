@@ -3,7 +3,7 @@ require('config.php');
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 switch ($action) {
-    case 'active':
+    case 'archive':
         archive();
         break;
     case 'viewArticle':
@@ -17,7 +17,7 @@ function archive() {
     $results = array();
     $data = Article::getList();
     $results['articles'] = $data['results'];
-    $results['totalRows'] = $data['totlRows'];
+    $results['totalRows'] = $data['totalRows'];
     $results['pageTitle'] = 'Article Archive | Widget News';
     require(TEMPLATE_PATH . '/archive.php');
 }

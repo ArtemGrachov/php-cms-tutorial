@@ -89,11 +89,11 @@ class Article {
      */
     public static function getList($numRows = 1000000) {
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publictionDate FROM articles
+        $sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
                 ORDER BY publicationDate DESC LIMIT :numRows";
 
         $st = $conn->prepare($sql);
-        $st->bindValue(":numRows", $numRows);
+        $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
         $st->execute();
         $list = array();
 
@@ -119,11 +119,12 @@ class Article {
         // Insert the Article
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
         $sql = "INSERT INTO articles (publicationDate, title, summary, content) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content)";
-        $st = $conn->perpare($sql);
+        $st = $conn->prepare($sql);
+        var_dump($this);
         $st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
-        $st->bindValue(":title", $this->title, PDO::PARAM_STRING);
-        $st->bindValue(":summary", $this->$summary, PDO::PARAM_STRING);
-        $st->bindValue(":content", $this->$content, PDO::PARAM_STRING);
+        $st->bindValue(":title", $this->title, PDO::PARAM_STR);
+        $st->bindValue(":summary", $this->summary, PDO::PARAM_STR);
+        $st->bindValue(":content", $this->content, PDO::PARAM_STR);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -140,11 +141,11 @@ class Article {
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
         $sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id";
         $st = $conn->prepare($sql);
-        $st->bindValue(":publicationDate", $this->$publicationDate, PDO::PARAM_INT);
-        $st->bindValue(":title", $this->$title, PDO::PARAM_STR);
-        $st->bindValue(":summary", $this->$summary, PDO::PARAM_STR);
-        $st->bindValue(":content", $this->$content, PDO::PARAM_STR);
-        $st->bindValue(":id", $this->$id, PDO::PARAM_INT);
+        $st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
+        $st->bindValue(":title", $this->title, PDO::PARAM_STR);
+        $st->bindValue(":summary", $this->summary, PDO::PARAM_STR);
+        $st->bindValue(":content", $this->content, PDO::PARAM_STR);
+        $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;
     }

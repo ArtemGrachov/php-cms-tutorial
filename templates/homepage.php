@@ -4,7 +4,9 @@
 <?php foreach($results['articles'] as $article) { ?>
     <li>
         <h2>
-            <?php echo date('j F', $article->publicationDate);?>
+            <a href="./?action=viewArticle&articleId=<?php $article->id; ?>">
+                <?php echo date('j F', $article->publicationDate);?>
+            </a>
         </h2>
         <p>
             <?php echo htmlspecialchars($article->summary); ?>
